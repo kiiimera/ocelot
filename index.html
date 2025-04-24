@@ -14,6 +14,7 @@
       font-weight: normal;
       font-style: normal;
     }
+
     body {
       -webkit-font-smoothing: none;
       -moz-osx-font-smoothing: auto;
@@ -176,28 +177,28 @@
     }
 
     .submenu {
-  display: flex;
-  position: absolute;
-  top: 0;
-  left: 100%;
-  transform: translateY(0) translateX(-20px);
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  padding: 0.75rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  z-index: 600;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  flex-direction: column;
-}
+      display: flex;
+      position: absolute;
+      top: 0;
+      left: 100%;
+      transform: translateY(0) translateX(-20px);
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 0.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      z-index: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      flex-direction: column;
+    }
 
     .submenu.show {
-  opacity: 1;
-  transform: translateY(0) translateX(0);
-  pointer-events: all;
-}
+      opacity: 1;
+      transform: translateY(0) translateX(0);
+      pointer-events: all;
+    }
 
     @keyframes pastelCycle {
       0% { color: #ffb6c1; border-color: #ffb6c1; }
@@ -205,6 +206,24 @@
       50% { color: #b0e0e6; border-color: #b0e0e6; }
       75% { color: #dda0dd; border-color: #dda0dd; }
       100% { color: #e0ffff; border-color: #e0ffff; }
+    }
+
+    .nettlimiter-toggle {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      font-family: 'Depixel', sans-serif;
+      font-size: 16px;
+      color: black;
+      opacity: 0.15;
+      cursor: pointer;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      z-index: 999;
+    }
+
+    .nettlimiter-toggle:hover {
+      transform: scale(1.1);
+      opacity: 0.4;
     }
   </style>
 </head>
@@ -240,6 +259,8 @@
 
   <audio id="catSound"></audio>
 
+  <div class="nettlimiter-toggle" id="nettToggle">@nettlimiter</div>
+
   <script>
     const ocelot = document.getElementById("ocelot");
     const mainMenu = document.getElementById("mainMenu");
@@ -248,10 +269,12 @@
     const catSound = document.getElementById("catSound");
     const audioToggle = document.getElementById("audioToggle");
     const volumeSlider = document.getElementById("volumeSlider");
+    const nettToggle = document.getElementById("nettToggle");
 
     let playingAudio = false;
     let soundIndex = 1;
     let menuOpen = false;
+    let usingAltTrack = false;
 
     document.body.addEventListener("mousemove", (e) => {
       if (menuOpen) return;
@@ -289,18 +312,18 @@
     }
 
     function toggleSubMenu() {
-    const dualityMenu = document.getElementById('dualityMenu');
-    const dualityOption = [...document.querySelectorAll('.menu-option')].find(el => el.textContent.includes('Duality Swap'));
+      const dualityOption = [...document.querySelectorAll('.menu-option')].find(el => el.textContent.includes('Duality Swap'));
 
-    if (dualityMenu.classList.contains('show')) {
-      dualityMenu.classList.remove('show');
-    } else {
-      const rect = dualityOption.getBoundingClientRect();
-      dualityMenu.style.top = `${rect.top + window.scrollY - dualityMenu.offsetHeight / 2 + dualityOption.offsetHeight / 2}px`;
-      dualityMenu.style.left = `${rect.right + 10}px`;
-      dualityMenu.classList.add('show');
+      if (dualityMenu.classList.contains('show')) {
+        dualityMenu.classList.remove('show');
+      } else {
+        const rect = dualityOption.getBoundingClientRect();
+        dualityMenu.style.top = `${rect.top + window.scrollY - dualityMenu.offsetHeight / 2 + dualityOption.offsetHeight / 2}px`;
+        dualityMenu.style.left = `${rect.right + 10}px`;
+        dualityMenu.classList.add('show');
+      }
     }
-  }
+
     function downloadFile(filename) {
       const link = document.createElement('a');
       link.href = filename;
@@ -317,6 +340,12 @@
     volumeSlider.addEventListener('input', (e) => {
       bgAudio.volume = e.target.value;
       catSound.volume = e.target.value;
+    });
+
+    nettToggle.addEventListener("click", () => {
+      usingAltTrack = !usingAltTrack;
+      bgAudio.src = usingAltTrack ? "public/nettspend.mp3" : "public/backgroundsong.mp3";
+      bgAudio.play();
     });
   </script>
 </body>
