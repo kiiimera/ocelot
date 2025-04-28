@@ -1,11 +1,11 @@
-﻿;============================================================================================;
-;											     ;
-; MACRO DOES NOT LIMIT FOR YOU								     ;					       	     
-; ENTER YOUR OWN (X, Y) COORDINATES FOR THE LOADOUTS YOU WANT TO USE			     ;
-; THIS AHK CREATES A TXT FILE IN THE SAME FILE LOCATION AS THE AHK TO SAVE YOUR COORDS	     ;
-;											     ;
-; @nettlimiter on discord								     ;
-;											     ;
+;============================================================================================;
+;											     
+; MACRO DOES NOT LIMIT FOR YOU								     				       	     
+; ENTER YOUR OWN (X, Y) COORDINATES FOR THE LOADOUTS YOU WANT TO USE			     
+; THIS AHK CREATES A TXT FILE IN THE SAME FILE LOCATION AS THE AHK TO SAVE YOUR COORDS	     
+;											     
+; @nettlimiter on discord								     
+;											     
 ;============================================================================================;
 
 
@@ -21,7 +21,7 @@ Gui Add, Hotkey, x85 y27 w75 h25 vSwapbind BackgroundTrans, %Swapbind%
 Gui Add, Button, x85 y57 w75 h25 gUpdateHotkeys BackgroundTrans, Save
 
 Gui, Font, s11 q5 000000 Bold
-Gui Add, Text, x277 y14 w100 h25, duality
+Gui Add, Text, x275 y14 w100 h25, desync
 Gui, Font, s11 q5 000000
 Gui Add, Edit, x340 y10 w50 h25 vCoord1X
 Gui Add, Edit, x400 y10 w50 h25 vCoord1Y
@@ -85,20 +85,20 @@ SetWorkingDir %A_ScriptDir%
 	Send, {Left}  
 	}
 	Sleep, 200 
-	Loop, 16  
+	Loop, 10  
 	{
 	MouseMove, %coord1x%, %coord1y%
-	Sleep, 50 
+	Sleep, 40 
 	Click  
-	Sleep, 50  
+	Sleep, 40  
 	MouseMove, %coord2x%, %coord2y%
-	Sleep, 50  
+	Sleep, 40  
 	Click  
-	Sleep, 50
+	Sleep, 40
 	MouseMove, %coord3x%, %coord3y%
-	Sleep, 50 
+	Sleep, 40 
 	Click  
-	Sleep, 50  
+	Sleep, 40  
 	}
 
 	Loop, 4
