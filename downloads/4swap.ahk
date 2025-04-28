@@ -92,32 +92,32 @@ Send, {Left}
 }
 Sleep, 200 
 
-Loop, 7  
+Loop, 8  
 {
 MouseMove, %coord1x%, %coord1y% 
-Sleep, 40 
+Sleep, 30 
 Click  
-Sleep, 40  
+Sleep, 30  
 MouseMove, %coord2x%, %coord2y%  
-Sleep, 40  
+Sleep, 30  
 Click  
-Sleep, 40
+Sleep, 30
 MouseMove, %coord3x%, %coord3y% 
-Sleep, 40 
+Sleep, 30 
 Click  
-Sleep, 40 
+Sleep, 30 
 MouseMove, %coord4x%, %coord4y%  
-Sleep, 40  
+Sleep, 30  
 Click  
-Sleep, 40  
+Sleep, 30  
 } 
 
 Loop, 4  
 {
 MouseMove, %coord4x%, %coord4y%  
-Sleep, 40
+Sleep, 30
 Click  
-Sleep, 40
+Sleep, 30
 }
 
 Sleep, 200
