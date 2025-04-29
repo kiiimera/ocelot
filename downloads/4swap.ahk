@@ -1,11 +1,11 @@
-﻿;============================================================================================;
-;											     ;
-; MACRO DOES NOT LIMIT FOR YOU								     ;					       	     
-; ENTER YOUR OWN (X, Y) COORDINATES FOR THE LOADOUTS YOU WANT TO USE			     ;
-; THIS AHK CREATES A TXT FILE IN THE SAME FILE LOCATION AS THE AHK TO SAVE YOUR COORDS	     ;
-;											     ;
-; @nettlimiter on discord								     ;
-;											     ;
+;============================================================================================;
+;											     
+; MACRO DOES NOT LIMIT FOR YOU								     					       	     
+; ENTER YOUR OWN (X, Y) COORDINATES FOR THE LOADOUTS YOU WANT TO USE			     
+; THIS AHK CREATES A TXT FILE IN THE SAME FILE LOCATION AS THE AHK TO SAVE YOUR COORDS	     
+;											     
+; @nettlimiter on discord								     
+;											     
 ;============================================================================================;
 
 #NoEnv 
@@ -20,7 +20,7 @@ Gui Add, Hotkey, x85 y37 w75 h25 vSwapbind BackgroundTrans, %Swapbind%
 Gui Add, Button, x85 y67 w75 h25 gUpdateHotkeys BackgroundTrans, Save
 
 Gui, Font, s11 q5 000000 Bold
-Gui Add, Text, x277 y14 w100 h25, duality
+Gui Add, Text, x275 y14 w100 h25, desync
 Gui, Font, s11 q5 000000
 Gui Add, Edit, x340 y10 w50 h25 vCoord1X
 Gui Add, Edit, x400 y10 w50 h25 vCoord1Y
@@ -32,18 +32,18 @@ Gui Add, Edit, x340 y40 w50 h25 vCoord2X
 Gui Add, Edit, x400 y40 w50 h25 vCoord2Y
 
 Gui, Font, s11 q5 000000 Bold
-Gui Add, Text, x277 y74 w100 h25, duality
+Gui Add, Text, x275 y74 w100 h25, desync
 Gui, Font, s11 q5 000000
 Gui Add, Edit, x340 y70 w50 h25 vCoord3X
 Gui Add, Edit, x400 y70 w50 h25 vCoord3Y
 
 Gui, Font, s11 q5 000000 Bold
-Gui Add, Text, x277 y104 w100 h25, lorentz
+Gui Add, Text, x277 y104 w100 h25, duality
 Gui, Font, s11 q5 000000
 Gui Add, Edit, x340 y100 w50 h25 vCoord4X
 Gui Add, Edit, x400 y100 w50 h25 vCoord4Y
 
-Gui, Show, w470 h140, g4
+Gui, Show, w470 h140, 4 swappa
 
 LoadData()
 
@@ -80,70 +80,49 @@ SwapHotkey:
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 
-	Sleep, 100
-	Send {f1} 
-	Sleep, 100  
-	MouseMove, 515, 625
-	
-	Loop, 35  
-	{
-	Sleep, 35  
-	Send, {Left}  
-	}
-	Sleep, 200 
-	
-	Loop, 6  
-	{
-	MouseMove, %coord1x%, %coord1y% 
-	Sleep, 40 
-	Click  
-	Sleep, 40  
-	MouseMove, %coord2x%, %coord2y%  
-	Sleep, 40  
-	Click  
-	Sleep, 40
-	MouseMove, %coord3x%, %coord3y% 
-	Sleep, 40 
-	Click  
-	Sleep, 40 
-	MouseMove, %coord4x%, %coord4y%  
-	Sleep, 40  
-	Click  
-	Sleep, 40  
-	}
+Sleep, 100
+Send {f1} 
+Sleep, 100  
+MouseMove, 515, 625
 
-	Send {f1}  
-	Sleep, 700
+Loop, 35  
+{
+Sleep, 35  
+Send, {Left}  
+}
+Sleep, 200 
 
-	Send {f1} 
-	Sleep, 200
-	MouseMove, 515, 625
-	Sleep, 40
-	
-	Loop, 35  
-	{
-	Sleep, 35  
-	Send, {Left}  
-	}
-	Sleep, 200 
+Loop, 8  
+{
+MouseMove, %coord1x%, %coord1y% 
+Sleep, 30 
+Click  
+Sleep, 30  
+MouseMove, %coord2x%, %coord2y%  
+Sleep, 30  
+Click  
+Sleep, 30
+MouseMove, %coord3x%, %coord3y% 
+Sleep, 30 
+Click  
+Sleep, 30 
+MouseMove, %coord4x%, %coord4y%  
+Sleep, 30  
+Click  
+Sleep, 30  
+} 
 
+Loop, 4  
+{
+MouseMove, %coord4x%, %coord4y%  
+Sleep, 30
+Click  
+Sleep, 30
+}
 
-	MouseMove, %coord2x%, %coord2y% 
-	Sleep, 5 
-	Click  
-	Sleep, 5  
-
-	Loop, 2  
-	{
-	MouseMove, %coord1x%, %coord1y%  
-	Sleep, 40
-	Click  
-	Sleep, 40
-	}
-
-	Sleep, 200
-	Send {f1}  
-	Sleep, 2000
+Sleep, 200
+Send {f1}  
+Sleep, 2000
 	
 return
 
@@ -174,3 +153,4 @@ LoadData() {
 		GuiControl,, Coord4Y, %dataArray9%
 	}
 }
+

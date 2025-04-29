@@ -6,6 +6,10 @@
   <title>ocelot</title>
   <link rel="icon" type="image/png" href="public/616430.png">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
+  <link rel="preload" href="public/nettspend.mp3" as="audio" type="audio/mpeg">
+  <link rel="preload" href="public/nettspend.mov" as="video" type="video/mp4">
+
   <style>
     @font-face {
       font-family: 'Depixel';
@@ -26,6 +30,7 @@
       animation: gradientShift 21s ease infinite;
       overflow: hidden;
       font-family: 'Depixel', sans-serif;
+      position: relative;
     }
 
     @keyframes gradientShift {
@@ -34,6 +39,24 @@
       50% { background-position: 100% 25%; }
       75% { background-position: 75% 0%; }
       100% { background-position: 0% 50%; }
+    }
+
+    .background-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease;
+    }
+
+    .background-video.show {
+      opacity: 1;
+      pointer-events: auto;
     }
 
     .audio-control {
@@ -81,7 +104,6 @@
       background: #7e7e7e;
       cursor: pointer;
       border: none;
-      box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
     }
 
     #volumeSlider::-moz-range-thumb {
@@ -159,9 +181,6 @@
     }
 
     .menu-option {
-      -webkit-font-smoothing: none;
-      -moz-osx-font-smoothing: auto;
-      image-rendering: pixelated;
       margin: 0.5rem 0;
       padding: 0.5rem 1rem;
       border-radius: 8px;
@@ -228,6 +247,10 @@
   </style>
 </head>
 <body>
+  <video id="backgroundVideo" class="background-video" loop muted playsinline>
+    <source src="public/nettspend.mov" type="video/mp4">
+  </video>
+
   <div class="audio-control">
     <button id="audioToggle">
       <span class="material-symbols-outlined">volume_up</span>
@@ -241,10 +264,11 @@
 
   <div class="menu" id="mainMenu">
     <div class="menu-option" onclick="downloadFile('downloads/loadoutswapper.ahk')">Numpad Loadout Swapper</div>
-    <div class="menu-option" onclick="downloadFile('downloads/burgerswap.ahk')">Burger Swap</div>
+    <div class="menu-option" onclick="downloadFile('downloads/burgerswap.zip')">Burger Swap</div>
     <div class="menu-option" onclick="downloadFile('downloads/sdcallouts.zip')">Doctrine Callouts</div>
     <div class="menu-option" onclick="toggleSubMenu()">Duality Swap</div>
     <div class="menu-option" onclick="downloadFile('downloads/chatspammer.ahk')">Chat Spammer</div>
+    <div class="menu-option" onclick="downloadFile('downloads/gamecrasher.ahk')">Game Crasher</div>
     <button class="close-button" onclick="toggleMenu()">✕</button>
   </div>
 
@@ -257,7 +281,7 @@
     <source src="public/backgroundsong.mp3" type="audio/mpeg">
   </audio>
 
-  <audio id="catSound"></audio>
+  <audio id="catSound" preload="auto"></audio>
 
   <div class="nettlimiter-toggle" id="nettToggle">@nettlimiter</div>
 
@@ -270,11 +294,14 @@
     const audioToggle = document.getElementById("audioToggle");
     const volumeSlider = document.getElementById("volumeSlider");
     const nettToggle = document.getElementById("nettToggle");
+    const bgVideo = document.getElementById("backgroundVideo");
 
     let playingAudio = false;
     let soundIndex = 1;
     let menuOpen = false;
     let usingAltTrack = false;
+
+    let audioCtx = null;
 
     document.body.addEventListener("mousemove", (e) => {
       if (menuOpen) return;
@@ -287,18 +314,27 @@
       ocelot.style.transform = `translate(-50%, -50%) translate(${offsetX}px, ${offsetY}px) rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
     });
 
-    ocelot.addEventListener("click", toggleMenu);
-
-    function toggleMenu() {
-      if (!playingAudio) {
-        bgAudio.play();
-        playingAudio = true;
+    ocelot.addEventListener("click", () => {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        audioCtx.resume();
       }
 
-      catSound.src = `public/catsound${soundIndex}.mp3`;
-      catSound.play();
-      soundIndex = soundIndex % 4 + 1;
+      if (!menuOpen) {
+        if (!playingAudio) {
+          bgAudio.play();
+          playingAudio = true;
+        }
 
+        catSound.src = `public/catsound${soundIndex}.mp3`;
+        catSound.play().catch(err => console.error("catsound load error:", err));
+        soundIndex = soundIndex % 4 + 1;
+      }
+
+      toggleMenu();
+    });
+
+    function toggleMenu() {
       if (!menuOpen) {
         ocelot.classList.add("hidden");
         mainMenu.classList.add("show");
@@ -313,7 +349,6 @@
 
     function toggleSubMenu() {
       const dualityOption = [...document.querySelectorAll('.menu-option')].find(el => el.textContent.includes('Duality Swap'));
-
       if (dualityMenu.classList.contains('show')) {
         dualityMenu.classList.remove('show');
       } else {
@@ -344,7 +379,16 @@
 
     nettToggle.addEventListener("click", () => {
       usingAltTrack = !usingAltTrack;
-      bgAudio.src = usingAltTrack ? "public/nettspend.mp3" : "public/backgroundsong.mp3";
+      if (usingAltTrack) {
+        bgAudio.src = "public/nettspend.mp3";
+        bgVideo.classList.add("show");
+        bgVideo.play();
+      } else {
+        bgAudio.src = "public/backgroundsong.mp3";
+        bgVideo.classList.remove("show");
+        bgVideo.pause();
+        bgVideo.currentTime = 0;
+      }
       bgAudio.play();
     });
   </script>
