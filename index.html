@@ -326,7 +326,7 @@
           playingAudio = true;
         }
 
-        catSound.src = `/public/catsound${soundIndex}.mp3`;
+        catSound.src = `public/catsound${soundIndex}.mp3`;
         catSound.play().catch(err => console.error("catsound load error:", err));
         soundIndex = soundIndex % 4 + 1;
       }
