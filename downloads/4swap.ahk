@@ -85,12 +85,12 @@ Send {f1}
 Sleep, 100  
 MouseMove, 515, 625
 
-Loop, 35  
+Loop, 30  
 {
-Sleep, 20  
+Sleep, 25  
 Send, {Left}  
 }
-Sleep, 100 
+Sleep, 130 
 
 Loop, 8  
 {
