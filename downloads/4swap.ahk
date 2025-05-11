@@ -115,9 +115,9 @@ Sleep, 30
 Loop, 4  
 {
 MouseMove, %coord4x%, %coord4y%  
-Sleep, 30
+Sleep, 35
 Click  
-Sleep, 30
+Sleep, 35
 }
 
 Sleep, 200
