@@ -85,7 +85,7 @@ SetWorkingDir %A_ScriptDir%
 	Send, {Left}  
 	}
 	Sleep, 200 
-	Loop, 6  
+	Loop, 7 
 	{
 	MouseMove, %coord1x%, %coord1y%
 	Sleep, 50 
