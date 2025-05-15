@@ -79,40 +79,41 @@ SetWorkingDir %A_ScriptDir%
 	Sleep, 100  
 	MouseMove, 515, 625
 	
-	Loop, 30  
+	Loop, 35  
 	{
-	Sleep, 25  
+	Sleep, 35  
 	Send, {Left}  
 	}
-	Sleep, 130 
-	Loop, 9  
+	Sleep, 200 
+	Loop, 6  
 	{
 	MouseMove, %coord1x%, %coord1y%
-	Sleep, 40 
+	Sleep, 50 
 	Click  
 	Sleep, 40  
 	MouseMove, %coord2x%, %coord2y%
-	Sleep, 40  
+	Sleep, 50  
 	Click  
 	Sleep, 40
 	MouseMove, %coord3x%, %coord3y%
-	Sleep, 40 
+	Sleep, 50 
 	Click  
 	Sleep, 40  
 	}
 
-	Loop, 4
+	Loop, 5
 	{
 	MouseMove, %coord3x%, %coord3y%
-	Sleep, 35 
+	Sleep, 40 
 	Click  
-	Sleep, 35 
+	Sleep, 40 
 	}
 
 	Send {f1}  
 	Sleep, 2000 
 
 return
+
 
 F5::reload
 
