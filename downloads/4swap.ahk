@@ -3,7 +3,9 @@
 ; MACRO DOES NOT LIMIT FOR YOU								     					       	     
 ; ENTER YOUR OWN (X, Y) COORDINATES FOR THE LOADOUTS YOU WANT TO USE			     
 ; THIS AHK CREATES A TXT FILE IN THE SAME FILE LOCATION AS THE AHK TO SAVE YOUR COORDS	     
-;											     
+;	
+; THIS MACRO HAS AN INCREASED PROBABILITY OF ERROR: BIRD
+;
 ; @nettlimiter on discord								     
 ;											     
 ;============================================================================================;
@@ -90,29 +92,29 @@ Loop, 30
 Sleep, 25  
 Send, {Left}  
 }
-Sleep, 130 
+Sleep, 180 
 
-Loop, 8  
+Loop, 4  
 {
 MouseMove, %coord1x%, %coord1y% 
-Sleep, 30 
+Sleep, 40 
 Click  
 Sleep, 30  
 MouseMove, %coord2x%, %coord2y%  
-Sleep, 30  
+Sleep, 40  
 Click  
 Sleep, 30
 MouseMove, %coord3x%, %coord3y% 
-Sleep, 30 
+Sleep, 40 
 Click  
 Sleep, 30 
 MouseMove, %coord4x%, %coord4y%  
-Sleep, 30  
+Sleep, 40  
 Click  
 Sleep, 30  
 } 
 
-Loop, 4  
+Loop, 5  
 {
 MouseMove, %coord4x%, %coord4y%  
 Sleep, 35
@@ -125,6 +127,7 @@ Send {f1}
 Sleep, 2000
 	
 return
+
 
 F5::reload
 
