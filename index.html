@@ -266,15 +266,10 @@
     <div class="menu-option" onclick="downloadFile('downloads/loadoutswapper.ahk')">Numpad Loadout Swapper</div>
     <div class="menu-option" onclick="downloadFile('downloads/burgerswap.zip')">Burger Swap</div>
     <div class="menu-option" onclick="downloadFile('downloads/sdcallouts.zip')">Doctrine Callouts</div>
-    <div class="menu-option" onclick="toggleSubMenu()">Duality Swap</div>
+    <div class="menu-option" onclick="downloadFile('downloads/dualityswap.zip')">Duality Swap</div>
     <div class="menu-option" onclick="downloadFile('downloads/chatspammer.ahk')">Chat Spammer</div>
     <div class="menu-option" onclick="downloadFile('downloads/gamecrasher.ahk')">Game Crasher</div>
     <button class="close-button" onclick="toggleMenu()">✕</button>
-  </div>
-
-  <div class="submenu" id="dualityMenu">
-    <div class="menu-option" onclick="downloadFile('downloads/3swap.ahk')">3 Swap</div>
-    <div class="menu-option" onclick="downloadFile('downloads/4swap.ahk')">4 Swap</div>
   </div>
 
   <audio id="backgroundAudio" loop>
@@ -338,25 +333,11 @@
       if (!menuOpen) {
         ocelot.classList.add("hidden");
         mainMenu.classList.add("show");
-        if (document.querySelector('.submenu.show')) dualityMenu.classList.add("show");
       } else {
         ocelot.classList.remove("hidden");
         mainMenu.classList.remove("show");
-        dualityMenu.classList.remove("show");
       }
       menuOpen = !menuOpen;
-    }
-
-    function toggleSubMenu() {
-      const dualityOption = [...document.querySelectorAll('.menu-option')].find(el => el.textContent.includes('Duality Swap'));
-      if (dualityMenu.classList.contains('show')) {
-        dualityMenu.classList.remove('show');
-      } else {
-        const rect = dualityOption.getBoundingClientRect();
-        dualityMenu.style.top = `${rect.top + window.scrollY - dualityMenu.offsetHeight / 2 + dualityOption.offsetHeight / 2}px`;
-        dualityMenu.style.left = `${rect.right + 10}px`;
-        dualityMenu.classList.add('show');
-      }
     }
 
     function downloadFile(filename) {
