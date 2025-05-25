@@ -21,44 +21,50 @@ if (!A_IsAdmin) {
 
 global ScrollX := 0
 global LabelWidth := 120 
-global WindowWidth := 260
+global WindowWidth := 290
+global WindowHeight := 70
 global LabelCount := Ceil(WindowWidth / LabelWidth) + 2
 global ScrollColor := "FFFFFF"
+global Margin := 6
+global ControlHeight := 23  ; Standardized height for all controls
 
 Gui, +AlwaysOnTop
-Gui, Font, s11 q5 000000, Whitney
+Gui, Font, s9 q5 000000, Whitney
 Gui, Color, 000000
 
-Gui, Add, Hotkey, x10 y10 w75 h25 vEvilbind BackgroundTrans, %EvilBind%
-Gui, Add, Button, x90 y10 w100 h25 gUpdateHotkeys BackgroundTrans, save hotkey
+; Calculate control widths for custom spacing
+ControlWidth := WindowWidth - (Margin * 2)
 
-Gui, Add, Edit, x10 y45 w135 h25 vMsgInput,
-Gui, Add, Button, x150 y45 w100 h25 gSaveMessage, save message
+; Calculate save button width first as our alignment point
+SaveButtonWidth := ControlWidth * 0.2      ; 20% for both save buttons
 
-Loop, %LabelCount%
-{
-    idx := A_Index
-    Gui, Add, Text, x0 y80 w%LabelWidth% h20 vInstText%idx% BackgroundTrans,
-}
+; First row widths
+DropDownWidth := ControlWidth * 0.5  ; 50% for dropdown
+HotkeyWidth := ControlWidth - DropDownWidth - SaveButtonWidth - (2 * Margin)  ; Remaining space for hotkey
 
-SetTimer, AnimateInstruction, 30
-Gui, Show, w%WindowWidth% h105, game crasher
-return
+; Second row widths - adjusted to give more space to save message button
+SaveMsgButtonWidth := ControlWidth * 0.3   ; 30% for save message button to fit text
+MessageWidth := ControlWidth - SaveMsgButtonWidth - Margin  ; Message takes remaining space
 
-AnimateInstruction:
-    ScrollX -= 1
-    if (ScrollX <= -LabelWidth)
-        ScrollX := 0
+; Center controls vertically
+VerticalCenter := (WindowHeight - (ControlHeight * 2)) / 3
 
-    Loop, %LabelCount%
-    {
-        idx := A_Index
-        xPos := ScrollX + (idx - 1) * LabelWidth
+; First row - Combined Mode selection, Hotkey and Save button
+FirstRowY := VerticalCenter
+FirstX := Margin
+Gui, Add, DropDownList, x%FirstX% y%FirstRowY% w%DropDownWidth% h%ControlHeight% R2 vLimitMode Choose1 gModeSelect, use with 27k|use without 27k
+HotkeyX := FirstX + DropDownWidth + Margin
+Gui, Add, Hotkey, x%HotkeyX% y%FirstRowY% w%HotkeyWidth% h%ControlHeight% vEvilbind BackgroundTrans, %EvilBind%
+SaveX := HotkeyX + HotkeyWidth + Margin
+Gui, Add, Button, x%SaveX% y%FirstRowY% w%SaveButtonWidth% h%ControlHeight% gUpdateHotkeys BackgroundTrans, Save
 
-        GuiControl,, InstText%idx%, instructions in code
-        GuiControl, +c%ScrollColor%, InstText%idx%
-        GuiControl, Move, InstText%idx%, x%xPos% y80
-    }
+; Second row - Message input and Save button
+SecondRowY := FirstRowY + ControlHeight + VerticalCenter
+Gui, Add, Edit, x%Margin% y%SecondRowY% w%MessageWidth% h%ControlHeight% vMsgInput,
+SaveMsgX := Margin + MessageWidth + Margin
+Gui, Add, Button, x%SaveMsgX% y%SecondRowY% w%SaveMsgButtonWidth% h%ControlHeight% gSaveMessage BackgroundTrans, Save Message
+
+Gui, Show, w%WindowWidth% h%WindowHeight%, Game Crasher
 return
 
 EvilHotkey:
@@ -66,7 +72,11 @@ EvilHotkey:
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 
-enable27k()
+GuiControlGet, LimitMode
+if (LimitMode = "use with 27k") {
+    enable27k()
+}
+
 Sleep, 200
 Send {f1}
 Sleep, 750
@@ -100,7 +110,9 @@ Sleep, 300
 Send {f1}
 Sleep, 1000
 
-disable27k()
+if (LimitMode = "use with 27k") {
+    disable27k()
+}
 return
 
 UpdateHotkeys:
@@ -145,3 +157,7 @@ disable27k() {
 GuiClose:
 disable27k()
 ExitApp
+
+ModeSelect:
+GuiControlGet, LimitMode
+return
