@@ -38,7 +38,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      z-index: -1;
+      z-index: 0;
       opacity: 0;
       pointer-events: none;
       transition: opacity 1s ease;
@@ -48,7 +48,6 @@
       opacity: 1;
       pointer-events: auto;
     }
-
     .audio-control {
       position: absolute;
       top: 1rem;
@@ -305,7 +304,7 @@
 
   <div id="asciiStars"></div>
 
-  <video id="backgroundVideo" class="background-video" loop muted playsinline preload="none"></video>
+  <video id="backgroundVideo" class="background-video" loop muted playsinline preload="auto"></video>
 
   <div class="audio-control">
     <button id="audioToggle">
@@ -502,28 +501,35 @@
 
       if (usingAltTrack) {
         asciiArt.classList.add("dark");
-        stars.style.opacity = 0;
-        stars.style.display = "none";
 
-        bgAudio.src = "public/nettspend.mp3";
+        stars.style.transition = "opacity 1s ease";
+        stars.style.opacity = 0;
+
         bgVideo.src = "public/nettspend.mov";
-        bgVideo.classList.add("show");
-        bgVideo.play();
+        bgAudio.src = "public/nettspend.mp3";
+
+        bgVideo.oncanplaythrough = () => {
+          bgVideo.classList.add("show");
+          bgVideo.play().catch(err => console.error("Video play error:", err));
+        };
+
       } else {
         asciiArt.classList.remove("dark");
 
         stars.style.display = "block";
+        stars.style.transition = "opacity 1s ease";
         stars.style.opacity = 1;
-        generateAsciiStars(); 
+        generateAsciiStars();
 
         bgAudio.src = "public/backgroundsong.mp3";
         bgVideo.classList.remove("show");
+
         bgVideo.pause();
         bgVideo.removeAttribute("src");
         bgVideo.load();
       }
 
-      bgAudio.play();
+      bgAudio.play().catch(err => console.error("Audio play error:", err));
     });
   </script>
 </body>
