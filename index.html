@@ -11,7 +11,7 @@
   <link rel="preload" href="public/nettspend.mov" as="video" type="video/mp4">
 
   <style>
-    @font-face {
+    @font-face { 
       font-family: 'Depixel';
       src: url('public/depixel.woff2') format('woff2'),
            url('public/depixel.woff') format('woff');
@@ -25,22 +25,12 @@
       image-rendering: pixelated;
       margin: 0;
       height: 100vh;
-      background: linear-gradient(-45deg, #ffffff, #add8e6, #ffffff, #fdfd96, #ffffff, #add8e6, #ffffff, #ffb6c1, #ffffff);
-      background-size: 800% 800%;
-      animation: gradientShift 21s ease infinite;
+      background: #000000;
       overflow: hidden;
       font-family: 'Depixel', sans-serif;
       position: relative;
     }
-
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      25% { background-position: 25% 75%; }
-      50% { background-position: 100% 25%; }
-      75% { background-position: 75% 0%; }
-      100% { background-position: 0% 50%; }
-    }
-
+ x
     .background-video {
       position: fixed;
       top: 0;
@@ -82,6 +72,54 @@
       padding: 0;
     }
 
+    #asciiOcelot {
+      font-family: monospace;
+      font-size: 7px;
+      line-height: 7px;
+      color: white;
+      white-space: pre;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 400;
+      text-align: left;
+      transition: opacity 0.6s ease;
+      opacity: 1;
+    }
+
+    #asciiOcelot.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #asciiOcelot.dark {
+      color: black;
+    }
+
+    #asciiStars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 1;
+      transition: opacity 1s ease;
+    }
+
+    .ascii-star {
+      position: absolute;
+      color: white;
+      font-family: monospace;
+      transition: transform 0.5s ease;
+      font-size: 12px;
+      opacity: 0.7;
+      user-select: none;
+    }
+
     #volumeSlider {
       appearance: none;
       width: 100px;
@@ -121,49 +159,40 @@
       pointer-events: auto;
     }
 
-    .ocelot-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      perspective: 1000px;
-    }
-
-    #ocelot {
-      transition: transform 0.3s ease, opacity 0.4s ease;
-      width: 200px;
-      transform-style: preserve-3d;
+    #ocelotText {
+      font-family: 'Chomsky', serif;
+      font-size: 64px;
+      color: white;
       cursor: pointer;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 999;
-      opacity: 1;
-    }
+      transition: opacity 0.4s ease;
+  }
 
-    #ocelot.hidden {
+    #ocelotText.hidden {
       opacity: 0;
       pointer-events: none;
     }
 
     .menu {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: flex;
-      flex-direction: column;
-      background: rgba(255, 255, 255, 0.3);
-      backdrop-filter: blur(10px);
-      border-radius: 10px;
-      padding: 1rem 1rem 0.5rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      z-index: 500;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-    }
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    padding: 0.75rem 0.75rem 0.5rem; 
+    max-width: 300px; 
+    box-shadow: none;
+    z-index: 500;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
 
     .menu.show {
       opacity: 1;
@@ -171,28 +200,33 @@
     }
 
     .close-button {
-      margin-top: 0.5rem;
+      margin-top: 0.4rem;
       align-self: center;
       background: none;
       border: none;
-      font-size: 20px;
+      font-size: 18px;
+      color: white;
       cursor: pointer;
       transition: all 0.3s ease;
     }
 
     .menu-option {
-      margin: 0.5rem 0;
-      padding: 0.5rem 1rem;
+      margin: 0.4rem 0;
+      padding: 0.4rem 0.8rem; 
       border-radius: 8px;
-      background-color: #0e0e0e11;
-      color: black;
+      background-color: rgba(100, 100, 100, 0.2);
+      backdrop-filter: blur(6px);
+      color: white;
+      font-size: 0.9rem; 
       border: 2px solid transparent;
       transition: all 0.3s ease;
       cursor: pointer;
     }
 
     .menu-option:hover {
-      animation: pastelCycle 3s infinite alternate;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      border-color: white;
     }
 
     .submenu {
@@ -205,7 +239,6 @@
       backdrop-filter: blur(10px);
       border-radius: 12px;
       padding: 0.75rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
       z-index: 600;
       opacity: 0;
       pointer-events: none;
@@ -219,22 +252,14 @@
       pointer-events: all;
     }
 
-    @keyframes pastelCycle {
-      0% { color: #ffb6c1; border-color: #ffb6c1; }
-      25% { color: #ffd1dc; border-color: #ffd1dc; }
-      50% { color: #b0e0e6; border-color: #b0e0e6; }
-      75% { color: #dda0dd; border-color: #dda0dd; }
-      100% { color: #e0ffff; border-color: #e0ffff; }
-    }
-
     .nettlimiter-toggle {
       position: absolute;
       bottom: 1rem;
       left: 1rem;
       font-family: 'Depixel', sans-serif;
       font-size: 16px;
-      color: black;
-      opacity: 0.15;
+      color: white;
+      opacity: 0.70;
       cursor: pointer;
       transition: transform 0.3s ease, opacity 0.3s ease;
       z-index: 999;
@@ -244,12 +269,43 @@
       transform: scale(1.1);
       opacity: 0.4;
     }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes drift {
+      0% {
+        transform: translate(0, 0);
+      }
+      100% {
+        transform: translate(10px, 20px);
+      }
+    }
+
+    .ascii-star {
+      position: absolute;
+      color: white;
+      font-family: monospace;
+      font-size: 12px;
+      opacity: 0.7;
+      user-select: none;
+      animation-name: twinkle, drift;
+      animation-duration: 3s, 30s;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+      transition: transform 0.5s ease;
+      animation-timing-function: ease-in-out;
+      will-change: transform, opacity;
+    }
   </style>
 </head>
 <body>
-  <video id="backgroundVideo" class="background-video" loop muted playsinline>
-    <source src="public/nettspend.mov" type="video/mp4">
-  </video>
+
+  <div id="asciiStars"></div>
+
+  <video id="backgroundVideo" class="background-video" loop muted playsinline preload="none"></video>
 
   <div class="audio-control">
     <button id="audioToggle">
@@ -259,16 +315,40 @@
   </div>
 
   <div class="ocelot-container">
-    <img src="public/ocelot.png" alt="Ocelot" id="ocelot">
-  </div>
+        <pre id="asciiOcelot">                           
+                                                                                                                       ..                                                                                       
+                                                                                                                    .-+#+.                                                                                      
+                                                                                                                  -+####+.                                                                                      
+                                                                                                               -+#######+.                                                                                      
+                                                                                                              .++#######+.                                                                                      
+                                                                                                                .+######+.                                                                                      
+                                                                                                                .+######+.                                        -#+.                                          
+                                                                                                                .+######+.                                      -+##+.                                          
+                                                  -++-.                    .-++.                  .---          .+######+.                 .-++.              -+####+.                                          
+                                              .-+######+-               .++#####+-.            .-+####-.        .+######+.              .+######+-.         -+#######++++++.                                    
+                                           .+++++#########-.        .-+##++########-       .-+++#######+.       .+######+.          .-+#++#########+.     .+#########++++-.                                     
+                                        -+####+. .-+########-.   .+######-.-+####+.     -+###+- .+######+-      .+######+.       .+#####-  -+########+.     -+######+.                                          
+                                       -######+.    .+######-.   .+######-   .-.      .+#####+-  .+######+-     .+######+.      .+######-     -+#####+.     .+######+.                                          
+                                       -######+.     -######-.   .+######-            .+#####+-    -+##++.      .+######+.      .+######-     .+#####+.     .+######+.                                          
+                                       -######+.     -######-.   .+######-            .+#####+-  .-++-.         .+######+.      .+######-     .+#####+.     .+######+.                                          
+                                       -######+.     -######-.   .+######-            .+######+-+++.            .+######+.      .+######-     .+#####+.     .+######+.                                          
+                                       -######+.     -######-.   .+######-            .+######+-.               .+######+.      .+######-     .+#####+.     .+######+.                                          
+                                       -######+.     -######-.   .+######-            .+#####+-                 .+######+.      .+######-     .+#####+.     .+######+.                                          
+                                       -######+.     -######-.   .+######+.           .+######+-         .--.   .+######+.      .+######-     .+#####+.     .+######+.                                          
+                                      .+#######+-.   -#####+-    .+#######+-.    .--  .+#########+.    .++-.    .+######+.      -+#######+.   .+####+-.     .+######+.                                          
+                                    .++++#########+-.+##+-.      .-+###########+++-  -+++###########++++-     -++########+-.-.-++++#########+.-+#++.      -++########+.                                         
+                                     .    -+#########+-             .++########+.    .    -+#########+.       .  .+########+.      .-+########+-.         .  .+########+++.                                     
+                                            .-+###+-                   .++##+-.             .-+###+-.              .-+##+-            -+###+-.                 .-+##++-.                                        
+                                               ..                         ..                   .--                    ..                ...                       ..                                            
+       </pre>
+      </div>
 
   <div class="menu" id="mainMenu">
     <div class="menu-option" onclick="downloadFile('downloads/loadoutswapper.ahk')">Numpad Loadout Swapper</div>
     <div class="menu-option" onclick="downloadFile('downloads/burgerswap.zip')">Burger Swap</div>
-    <div class="menu-option" onclick="downloadFile('downloads/sdcallouts.zip')">Doctrine Callouts</div>
     <div class="menu-option" onclick="downloadFile('downloads/dualityswap.zip')">Duality Swap</div>
     <div class="menu-option" onclick="downloadFile('downloads/chatspammer.ahk')">Chat Spammer</div>
-    <div class="menu-option" onclick="downloadFile('downloads/gamecrasher.ahk')">27k Game Crasher</div>
+    <div class="menu-option" onclick="downloadFile('downloads/gamecrasher.ahk')">Game Crasher</div>
     <button class="close-button" onclick="toggleMenu()">✕</button>
   </div>
 
@@ -281,7 +361,7 @@
   <div class="nettlimiter-toggle" id="nettToggle">@nettlimiter</div>
 
   <script>
-    const ocelot = document.getElementById("ocelot");
+    const ocelot = document.getElementById("asciiOcelot");
     const mainMenu = document.getElementById("mainMenu");
     const dualityMenu = document.getElementById("dualityMenu");
     const bgAudio = document.getElementById("backgroundAudio");
@@ -296,7 +376,59 @@
     let menuOpen = false;
     let usingAltTrack = false;
 
+    generateAsciiStars();
+
     let audioCtx = null;
+
+    function generateAsciiStars(count = 300) {
+      const container = document.getElementById("asciiStars");
+      container.innerHTML = "";
+
+      const symbols = ['*', '.', '+', ':', '~'];
+
+      const screenW = window.innerWidth;
+      const screenH = window.innerHeight;
+      const centerX = screenW / 2;
+      const centerY = screenH / 2;
+
+      const spreadW = screenW * 1.5;
+      const spreadH = screenH * 1.5;
+
+      const safeZone = {
+        xMin: -250,
+        xMax: 250,
+        yMin: -150,
+        yMax: 150,
+      };
+
+      let placed = 0;
+      while (placed < count) {
+        const x = (Math.random() - 0.5) * spreadW;
+        const y = (Math.random() - 0.5) * spreadH;
+
+        if (x >= safeZone.xMin && x <= safeZone.xMax && y >= safeZone.yMin && y <= safeZone.yMax) {
+          continue;
+        }
+
+        const star = document.createElement("div");
+        star.classList.add("ascii-star");
+        star.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+
+        star.style.position = "absolute";
+        star.style.left = `calc(50% + ${x}px)`;
+        star.style.top = `calc(50% + ${y}px)`;
+
+        const size = 10 + Math.random() * 6;
+        star.style.fontSize = `${size}px`;
+        star.style.animationDuration = `${2 + Math.random() * 3}s, ${20 + Math.random() * 20}s`;
+
+        container.appendChild(star);
+        placed++;
+      }
+    }
+
+    let previousWidth = window.innerWidth;
+    let previousHeight = window.innerHeight;
 
     document.body.addEventListener("mousemove", (e) => {
       if (menuOpen) return;
@@ -330,13 +462,16 @@
     });
 
     function toggleMenu() {
+      const asciiOcelot = document.getElementById("asciiOcelot");
+
       if (!menuOpen) {
-        ocelot.classList.add("hidden");
+        asciiOcelot.classList.add("fade-out");
         mainMenu.classList.add("show");
       } else {
-        ocelot.classList.remove("hidden");
+        asciiOcelot.classList.remove("fade-out");
         mainMenu.classList.remove("show");
       }
+
       menuOpen = !menuOpen;
     }
 
@@ -358,18 +493,36 @@
       catSound.volume = e.target.value;
     });
 
+    const stars = document.getElementById("asciiStars");
+
     nettToggle.addEventListener("click", () => {
       usingAltTrack = !usingAltTrack;
+
+      const asciiArt = document.getElementById("asciiOcelot");
+
       if (usingAltTrack) {
+        asciiArt.classList.add("dark");
+        stars.style.opacity = 0;
+        stars.style.display = "none";
+
         bgAudio.src = "public/nettspend.mp3";
+        bgVideo.src = "public/nettspend.mov";
         bgVideo.classList.add("show");
         bgVideo.play();
       } else {
+        asciiArt.classList.remove("dark");
+
+        stars.style.display = "block";
+        stars.style.opacity = 1;
+        generateAsciiStars(); 
+
         bgAudio.src = "public/backgroundsong.mp3";
         bgVideo.classList.remove("show");
         bgVideo.pause();
-        bgVideo.currentTime = 0;
+        bgVideo.removeAttribute("src");
+        bgVideo.load();
       }
+
       bgAudio.play();
     });
   </script>
